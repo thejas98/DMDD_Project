@@ -1,0 +1,11 @@
+Create table test(
+id varchar(50) PRIMARY KEY,
+first_name varchar(20),
+last_name varchar(20),
+age number(3),
+dob date,
+phone_number number(10),
+email varchar(50)
+);
+select * from test;
+
