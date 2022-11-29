@@ -1,0 +1,324 @@
+BEGIN
+EXECUTE IMMEDIATE 'DROP TABLE FEEDBACK';
+EXCEPTION
+   WHEN OTHERS
+   THEN NULL;
+END;
+/
+
+
+BEGIN
+EXECUTE IMMEDIATE 'DROP TABLE TICKETS';
+EXCEPTION
+   WHEN OTHERS
+   THEN NULL;
+END;
+/
+
+
+BEGIN
+EXECUTE IMMEDIATE 'DROP TABLE EVENTS';
+EXCEPTION
+   WHEN OTHERS
+   THEN NULL;
+END;
+/
+
+BEGIN
+EXECUTE IMMEDIATE 'DROP TABLE VENUE';
+EXCEPTION
+   WHEN OTHERS
+   THEN NULL;
+END;
+/
+
+BEGIN
+EXECUTE IMMEDIATE 'DROP TABLE ORGANIZER';
+EXCEPTION
+   WHEN OTHERS
+   THEN NULL;
+END;
+/
+
+BEGIN
+EXECUTE IMMEDIATE 'DROP TABLE DEPARTMENT';
+EXCEPTION
+   WHEN OTHERS
+   THEN NULL;
+END;
+/
+
+
+BEGIN
+EXECUTE IMMEDIATE 'DROP TABLE LOGIN';
+EXCEPTION
+   WHEN OTHERS
+   THEN NULL;
+END;
+/
+COMMIT;
+
+Create table Login(
+USER_ID varchar2(20) PRIMARY KEY,
+USER_NAME varchar2(30) NOT NULL,
+USER_EMAIL varchar2(80) NOT NULL,
+PASSWORD varchar2(20) NOT NULL,
+USER_ROLE varchar2(20) NOT NULL
+);
+
+Create table Department(
+DEPARTMENT_ID varchar2(20) PRIMARY KEY,
+DEPARTMENT_NAME varchar2(30) NOT NULL,
+DEPARTMENT_HEAD varchar2(30) NOT NULL,
+DEPARTMENT_CONTACT varchar2(15) NOT NULL
+);
+
+Create table Organizer(
+ORGANIZER_ID varchar2(20) PRIMARY KEY,
+DEPARTMENT_ID varchar2(20) REFERENCES DEV1.Department(DEPARTMENT_ID),
+EMAIL varchar2(80) NOT NULL,
+ORGANIZER_LIST varchar2(255),
+ORGANIZER_HEAD_CONTACT varchar2(20) NOT NULL,
+ORGANIZER_HEAD_NAME varchar2(30) NOT NULL
+);
+
+
+Create table Venue(
+VENUE_ID varchar2(20) PRIMARY KEY,
+VENUE_NAME varchar2(30) NOT NULL,
+VENUE_LOCATION varchar2(50) NOT NULL,
+VENUE_OCCUPANCY_LIMIT number(5) NOT NULL,
+VENUE_PRICE varchar2(10) NOT NULL
+);
+
+Create table Events(
+EVENT_ID varchar2(20) PRIMARY KEY,
+ORGANIZER_ID varchar2(20) REFERENCES DEV1.ORGANIZER(ORGANIZER_ID),
+VENUE_ID varchar2(20) REFERENCES DEV1.VENUE(VENUE_ID),
+EVENT_NAME varchar2(30) NOT NULL,
+EVENT_START_DATE date NOT NULL,
+EVENT_END_DATE date NOT NULL,
+EVENT_PRICE varchar2(10) NOT NULL,
+MAXIMUM_TICKETS number(5) NOT NULL,
+EVENT_STATUS varchar2(20) NOT NULL
+);
+
+Create table Tickets(
+TICKET_ID varchar2(20) PRIMARY KEY,
+USER_ID varchar2(20) REFERENCES DEV1.LOGIN(USER_ID),
+EVENT_ID varchar2(20) REFERENCES DEV1.EVENTS(EVENT_ID),
+NAME_ON_TICKET varchar2(30) NOT NULL,
+GENDER varchar2(10) NOT NULL,
+NO_OF_TICKETS number(10) NOT NULL,
+ADDRESS varchar2(50) NOT NULL,
+MOBILE_NUMBER varchar2(20) NOT NULL,
+EMAIL varchar2(80) NOT NULL,
+BILL_DATE date NOT NULL,
+TICKET_INFORMATION CLOB
+);
+
+Create table Feedback(
+FEEDBACK_ID varchar2(20) PRIMARY KEY,
+USER_ID varchar2(20) REFERENCES DEV1.LOGIN(USER_ID),
+EVENT_ID varchar2(20) REFERENCES DEV1.EVENTS(EVENT_ID),
+FEEDBACK_INFO varchar2(255) NOT NULL
+);
+COMMIT;
+
+
+--SCRIPT TO INSERT VALUES IN DEPARTMENT TABLE
+
+truncate table feedback;
+truncate table tickets;
+truncate table EVENTS;
+truncate table venue;
+truncate table organizer;
+truncate table department;
+truncate table login;
+
+--truncate table login;
+insert into login VALUES(1,'admin','eventmgtsystemadmin@gmail.com','admin','admin');
+insert into login VALUES(2,'jack.reacher','jack.reacher@gmail.com','jack.reacher123','student');
+insert into login VALUES(3,'tim.cook','tim.cook@gmail.com','tim.cook123','student');
+insert into login VALUES(4,'scott.raven','scott.raven@gmail.com','scott.raven123','student');
+insert into login VALUES(5,'satish.krishnan','satish.krishnan@gmail.com','satish.krishnan123','student');
+insert into login VALUES(6,'satyam.mishra','satyam.mishra@gmail.com','satyam.mishra123','student');
+insert into login VALUES(7,'shamin.choksi','shamin.choksi@gmail.com','shamin.choksi123','student');
+insert into login VALUES(8,'vishwa.shah','vishwa.shah@gmail.com','vishwa.shah123','student');
+insert into login VALUES(9,'thejas.bharadwaj','thejas.bharadwaj@gmail.com','thejas.bharadwaj123','student');
+insert into login VALUES(10,'nishtha.pandya','nishtha.pandya@gmail.com','nishtha.pandya123','student');
+insert into login VALUES(11,'niyati.mehta','niyati.mehta@gmail.com','niyati.mehta123','student');
+insert into login VALUES(12,'scott.lang','scott.lang@gmail.com','scott.lang123','departmenthead');
+insert into login VALUES(13,'barry.allen','barry.allen@gmail.com','barry.allen123','departmenthead');
+insert into login VALUES(14,'clint.barton','clint.barton@gmail.com','clint.barton123','departmenthead');
+insert into login VALUES(15,'tony.stark','tony.stark@gmail.com','tony.stark123','departmenthead');
+insert into login VALUES(16,'steve.rogers','steve.rogers@gmail.com','steve.rogers123','departmenthead');
+insert into login VALUES(17,'oliver.queen','oliver.queen@gmail.com','oliver.queen123','departmenthead');
+insert into login VALUES(18,'bruce.wayne','bruce.wayne@gmail.com','bruce.wayne123','departmenthead');
+insert into login VALUES(19,'clark.kent','clark.kent@gmail.com','clark.kent123','departmenthead');
+insert into login VALUES(20,'thomas.shelby','thomas.shelby@gmail.com','thomas.shelby123','departmenthead');
+insert into login VALUES(21,'bruce.banner','bruce.banner@gmail.com','bruce.banner123','departmenthead');
+insert into login VALUES(22,'peter.parker','peter.parker@gmail.com','peter.parker123','departmenthead');
+insert into login VALUES(23,'richard.sherman','richard.sherman@northeastern.edu','richard.sherman123','organizer');
+insert into login VALUES(24,'tara.rich','tara.rich@northeastern.edu','tara.rich123','organizer');
+insert into login VALUES(25,'subhrata.das','subhrata.das@northeastern.edu','subhrata.das123','organizer');
+insert into login VALUES(26,'wuping.wang','wuping.wang@northeastern.edu','wuping.wang123','organizer');
+COMMIT;
+
+--truncate table department;
+insert into department VALUES(101,'Computer science','Scott Lang','8573287765');
+insert into department VALUES(102,'Robotics','Barry Allen','8573282569');
+insert into department VALUES(103,'Dance club','Clint Barton','8578847765');
+insert into department VALUES(104,' Indian Music Club','Tony stark','9872287765');
+insert into department VALUES(105,'Debate society','Steve Rogers','8511187765');
+insert into department VALUES(206,'Western Dance club','Oliver Queen','8588547765');
+insert into department VALUES(207,'3D Printing club','Bruce Wayne','8573325965');
+insert into department VALUES(208,'Gym and Fitness','Clark Kent','8573991165');
+insert into department VALUES(209,'Finance Club','Thomas Shelby','8573255905');
+insert into department VALUES(310,'Marketing Mavericks','Bruce Banner','8573289921');
+insert into department VALUES(311,'Architecture society','Peter Parker','8573283341');
+COMMIT;
+
+--truncate table organizer;
+insert into organizer VALUES(12,101,'richard.sherman@northeastern.edu','Manish Patel, Richard Sherman, Vishwa Shah, Aangi Shah','8574563278','Richard Sherman');
+insert into organizer VALUES(13,102,'tara.rich@northeastern.edu','Tara Rich, Soham Shah, Nishta Pandya','8573282596','Tara Rich');
+insert into organizer VALUES(14,103,'subhrata.das@northeastern.edu','Subhrata Das, Sanket Shah, Samved Shah','8578847867','Subhrata Das');
+insert into organizer VALUES(15,104,'wuping.wang@northeastern.edu','Wuping Wang, Aashka Jain, Aman Shah','9872287345','Wuping Wang');
+COMMIT;
+
+--truncate table venue;
+insert into venue VALUES(21,'Shillman Hall','115 Forsyth St, Boston, MA 02115',100,2000);
+insert into venue VALUES(22,'Dodge Hall','324 Huntington Ave, Boston, MA 02115',200,4000);
+insert into venue VALUES(23,'Richard Hall','360 Huntington Ave, Boston, MA 02115',300,3000);
+insert into venue VALUES(24,'Behrakins Hall','460 Huntington Ave, MA 02120',200,1000);
+insert into venue VALUES(25,'ISEC Building','805 Columbus Ave, Boston, MA 02120',300,1000);
+COMMIT;
+  
+--truncate table EVENTS;
+alter session set nls_date_format = 'yyyy/mm/dd hh24:mi:ss';
+insert into events VALUES(1, 15, 21,'Navratri',TO_DATE('2003/05/03 19:02:44', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2003/05/03 21:02:44', 'yyyy/mm/dd hh24:mi:ss'), 20, 100, 'COMPLETED');
+insert into events VALUES(2, 12, 22,'Cisco Hackathon 2022',TO_DATE('2022/12/03 19:02:44', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2022/12/03 21:02:44', 'yyyy/mm/dd hh24:mi:ss'), 25, 200, 'COMPLETED');
+insert into events VALUES(3, 15, 22,'Sur Sandhya',TO_DATE('2022/12/11 19:00:00', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2022/12/11 23:00:00', 'yyyy/mm/dd hh24:mi:ss'), 10, 200, 'AVAILABLE');
+insert into events VALUES(4, 13, 25,'Robot Exhibition',TO_DATE('2022/12/22 13:00:00', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2022/12/22 19:00:00', 'yyyy/mm/dd hh24:mi:ss'), 15, 50, 'COMPLETED');
+insert into events VALUES(5, 14, 24,'Step Up',TO_DATE('2023/01/03 10:00:00', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2023/01/03 12:30:00', 'yyyy/mm/dd hh24:mi:ss'), 5, 100, 'UNAVAILABLE');
+insert into events VALUES(6, 12, 21,'FAANG Workshop',TO_DATE('2022/12/03 14:02:44', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2022/12/03 18:02:44', 'yyyy/mm/dd hh24:mi:ss'), 25, 200, 'AVAILABLE');
+insert into events VALUES(7, 15, 22,'Arijit Singh Concert',TO_DATE('2022/12/29 19:00:00', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2022/12/29 23:00:00', 'yyyy/mm/dd hh24:mi:ss'), 10, 200, 'CANCELLED');
+insert into events VALUES(8, 13, 25,'Robotics and AI Workshop',TO_DATE('2022/12/21 13:00:00', 'yyyy/mm/dd hh24:mi:ss'),TO_DATE('2022/12/21 19:00:00', 'yyyy/mm/dd hh24:mi:ss'), 15, 100, 'AVAILABLE');
+COMMIT;
+
+--truncate table tickets;
+insert into tickets VALUES(1002,2,1,'jack reacher','Male',2,'1575 Tremont st.','9979916929','jack.reacher@gmail.com',TO_DATE('2022/12/21','yyyy/mm/dd'),'{"all_info":[{"name":"jack reacher", "age":"19", "gender":"male"},{"name":"priyanka sharma", "age":"18", "gender":"female"}]}');
+insert into tickets VALUES(1003,3,2,'tim cook','Male',1,'857 Hungtington Ave','9876458960','tim.cook@gmail.com',TO_DATE('2022/12/20','yyyy/mm/dd'),'{"all_info":[{"name":"tim cook", "age":"20", "gender":"male"}]}');
+insert into tickets VALUES(1004,4,3,'scott raven','Male',3,'16 Westland Ave','12348765598','scott.raven@gmail.com',TO_DATE('2022/11/21','yyyy/mm/dd'),'{"all_info":[{"name":"scott raven", "age":"25", "gender":"male"},{"name":"kavisha shah", "age":"28", "gender":"female"},{"name":"soham shah", "age":"29", "gender":"male"}]}');
+insert into tickets VALUES(1005,5,4,'satish krishnan','Male',2,'1874 Roxbourgh crossing','7890654789','satish.krishnan@gmail.com',TO_DATE('2022/12/10','yyyy/mm/dd'),'{"all_info":[{"name":"satish krishnan", "age":"29", "gender":"male"},{"name":"nirja shah", "age":"23", "gender":"female"}]}');
+insert into tickets VALUES(1006,6,6,'satyam mishra','Male',1,'987 Boylston St.','9876489874','satyam.mishra@gmail.com',TO_DATE('2022/10/21','yyyy/mm/dd'),'{"all_info":[{"name":"satyam mishra", "age":"29", "gender":"male"}]}');
+insert into tickets VALUES(1007,7,7,'shamin choksi','Male',3,'786 Newburgh st','6179348885','shamin.choksi@gmail.com',TO_DATE('2022/12/01','yyyy/mm/dd'),'{"all_info":[{"name":"shamin choksi", "age":"19", "gender":"male"},{"name":"Sanket patel", "age":"20", "gender":"male"},{"name":"aman shah", "age":"18", "gender":"male"}]}');
+insert into tickets VALUES(1008,8,8,'vishwa shah','Female',2,'888 Park St.','9825973110','vishwa.shah@gmail.com',TO_DATE('2022/11/10','yyyy/mm/dd'),'{"all_info":[{"name":"vishwa shah", "age":"23", "gender":"female"},{"name":"helly shah", "age":"25", "gender":"female"}]}');
+insert into tickets VALUES(1009,9,1,'thejas bharadwaj','Male',1,'675 Arlington st.','9724064249','thejas.bharadwaj@gmail.com',TO_DATE('2022/12/21','yyyy/mm/dd'),'{"all_info":[{"name":"thejas bharadwaj", "age":"24", "gender":"male"}]}');
+insert into tickets VALUES(1010,10,5,'nishtha pandya','Female',2,' Huntington Ave','9099040777','nishtha.pandya@gmail.com',TO_DATE('2022/11/01','yyyy/mm/dd'),'{"all_info":[{"name":"nishtha pandya", "age":"24", "gender":"female"},{"name":"Mahek pandya", "age":"21", "gender":"female"}]}');
+insert into tickets VALUES(1011,11,2,'niyati mehta','Female',1,'Mission Hill','7600617658','niyati.mehta@gmail.com',TO_DATE('2022/12/13','yyyy/mm/dd'),'{"all_info":[{"name":"niyati mehta", "age":"19", "gender":"female"}]}');
+COMMIT;
+
+--truncate table feedback;
+insert into feedback VALUES(1, 2, 1,'Good garba music');
+insert into feedback VALUES(2, 3, 2,'Did not provide Refreshments');
+insert into feedback VALUES(3, 5, 4,'Team was nor Technically sound');
+insert into feedback VALUES(4, 9, 1,'Really nice decoration and music');
+insert into feedback VALUES(5, 11, 2,'Coomittee was very helpful but needed some refreshments like coffee or redbull to go ahead for the hackathon');
+COMMIT;
+
+--list of events sorted by department
+CREATE OR REPLACE VIEW Events_Departments AS 
+SELECT e.EVENT_NAME,d.DEPARTMENT_NAME FROM
+EVENTS e JOIN
+ORGANIZER o ON
+e.ORGANIZER_ID = o.ORGANIZER_ID
+JOIN
+DEPARTMENT d ON 
+o.DEPARTMENT_ID = d.DEPARTMENT_ID
+GROUP BY e.EVENT_NAME,d.DEPARTMENT_NAME 
+ORDER BY d.DEPARTMENT_NAME ;
+COMMIT;
+
+--total no of tickets sold for completed events
+CREATE OR REPLACE VIEW NO_OF_TICKETS_SOLD_BY_EVENT AS SELECT e.EVENT_NAME,SUM(t.NO_OF_TICKETS) AS NUMBER_OF_TICKETS FROM 
+EVENTS e 
+JOIN 
+TICKETS t 
+on 
+t.EVENT_ID = e.EVENT_ID
+WHERE EVENT_STATUS = 'COMPLETED'
+GROUP BY e.EVENT_NAME
+ORDER BY e.EVENT_NAME;
+COMMIT;
+
+--list of all the available events for a particular day/month
+CREATE OR REPLACE VIEW EVENTS_IN_DECEMBER AS 
+SELECT EVENT_NAME, EVENT_START_DATE 
+FROM EVENTS
+WHERE to_char(EVENT_START_DATE,'MON')= 'DEC'
+ORDER BY EVENT_START_DATE;
+COMMIT;
+
+--feedback for a particular event
+CREATE OR REPLACE VIEW EVENT_FEEDBACK AS
+select e.event_id, e.event_name,
+LISTAGG(f.feedback_info,';')
+within group (order by f.feedback_info) as info
+from feedback f
+JOIN events e
+ON f.event_id = e.event_id
+group by e.event_id, e.event_name
+ORDER BY e.event_id;
+COMMIT;
+
+--order invoice
+CREATE OR REPLACE VIEW ORDER_INVOICE AS
+select t.ticket_id, t.event_id, t.no_of_tickets, t.name_on_ticket, e.event_price * t.no_of_tickets as TOTAL_BILLING_PRICE,
+JSON_query(t.ticket_information,'$.all_info[*].name' WITH WRAPPER) as Student_names
+from tickets t
+JOIN events e
+ON t.event_id = e.event_id
+ORDER BY t.ticket_id;
+COMMIT;
+
+--Number of users for a particular role - 
+CREATE OR REPLACE VIEW NUMBER_OF_USERS AS
+SELECT user_role, count(*) AS Total_count from LOGIN
+GROUP BY user_role
+ORDER BY Total_count DESC;
+COMMIT;
+
+--List of cancelled events - 
+CREATE OR REPLACE VIEW LIST_OF_CANCELLED_EVENTS AS
+select event_id, event_name, event_status
+from EVENTS
+where event_status = 'CANCELLED';
+COMMIT;
+
+--Registered students for a particular event
+CREATE OR REPLACE VIEW REGISTERED_STUDENTS AS
+select t.event_id, e.event_name,
+LISTAGG(JSON_query(t.ticket_information,'$.all_info[*].name' WITH WRAPPER),',')
+WITHIN GROUP (ORDER BY t.ticket_information) as Student_names
+from tickets t
+JOIN events e
+ON t.event_id = e.event_id
+group by t.event_id, e.event_name
+ORDER BY t.event_id;
+COMMIT;
+
+--Total revenue generated for a particular event
+CREATE OR REPLACE VIEW TOTAL_REVENUE_FOR_A_PARTICULAR_EVENT AS
+select t.event_id,e.event_name,SUM(e.event_price * t.no_of_tickets) as TOTAL_EVENT_RVENUE from tickets t inner join events e on t.event_id = e.event_id GROUP BY t.event_id, e.event_name order by t.event_id ;
+COMMIT;
+
+--Total number of tickets for a particular event
+CREATE OR REPLACE VIEW TOTAL_TICKETS_FOR_A_PARTICULAR_EVENT AS
+select t.event_id,e.event_name,SUM( t.no_of_tickets) as TOTAL_EVENT_TICKETS from tickets t inner join events e on t.event_id = e.event_id GROUP BY t.event_id, e.event_name order by t.event_id ;
+COMMIT;
+
+--Venue Availability (shows booked timings for each venue)
+CREATE OR REPLACE VIEW Venue_Availibility_booked_timings AS
+select v.venue_id,v.venue_name,e.event_start_date,to_char(e.event_start_date, 'hh24:mi:ss') as event_start_time,event_end_date,to_char(e.event_end_date, 'hh24:mi:ss')as event_end_time from venue v inner join events e on v.venue_id=e.venue_id order by v.venue_id;
+COMMIT;
