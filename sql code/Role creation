@@ -1,0 +1,35 @@
+SELECT * FROM session_privs;
+
+drop role organiser;
+drop role department_head;
+drop role student;
+
+
+CREATE ROLE organiser IDENTIFIED BY organiser123;
+CREATE ROLE department_head IDENTIFIED BY dept123;
+CREATE ROLE student IDENTIFIED BY student123;
+
+
+GRANT CREATE SESSION to organiser, department_head, student;
+
+drop user org;
+drop user dept;
+
+CREATE USER org IDENTIFIED BY November2022;
+grant create session to org;
+grant organiser to org;
+
+grant select on bricks to organiser;
+
+
+CREATE USER dept IDENTIFIED BY November2022;
+grant create session to dept;
+grant department_head to dept;
+
+
+
+
+
+
+
+
